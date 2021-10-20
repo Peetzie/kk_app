@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kk_app/DetailScreen.dart';
 
 class SecondScreen extends StatelessWidget {
   CollectionReference Titles = FirebaseFirestore.instance.collection("Titles");
@@ -33,6 +34,14 @@ class SecondScreen extends StatelessWidget {
                 final dateTime = docData.toString();
                 return ListTile(
                   title: Text(dateTime.toString()),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailScreen()
+                      ),
+                    );
+                  },
                 );
               });
         },
