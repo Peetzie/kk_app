@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    CollectionReference Titles = FirebaseFirestore.instance.collection("Titles");
     return Scaffold(
       appBar: AppBar(
         title: const Text("Firebase"),
@@ -16,15 +17,20 @@ class SecondScreen extends StatelessWidget {
         child: Icon(Icons.add),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("testing").snapshots(),
+        // Bruges til at læse Value fra Titles
+        stream: Titles.snapshots(),
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot> snapshot,) {
-          if (!snapshot.hasData) return const SizedBox.shrink();
+          if (!snapshot.hasData) {
+            return const Text("Henter data.. Vent venligst..");
+          }
+
           return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (BuildContext context, int index) {
-                final docData = snapshot.data!.docs[index].data();
-                final dateTime = DateTime.now();
+                // Kan læse value dataet fra FireStore
+                final docData = snapshot.data!.docs[index]["field"];
+                final dateTime = docData.toString();
                 return ListTile(
                   title: Text(dateTime.toString()),
                 );
